@@ -4,36 +4,57 @@ namespace TebakKata_Tes
 {
     class Program
     {
+        static int skor = 0;
         static void Main(string[] args)
         {
-            Console.SetWindowSize(100, 30); // Set ukuran jendela konsol agar cukup besar
-
-            bool continuePlaying = true;
-            while (continuePlaying)
+            bool skipToGame = false;
+            while (true)
             {
-                Console.Clear(); // Membersihkan konsol sebelum memulai permainan baru
-                DisplayWelcomeMessage();
-
-                PlayGame();
-
-                // Menanyakan apakah pemain ingin melanjutkan bermain
-                Console.Write("\nApakah Anda ingin bermain lagi? (ya/tidak): ");
-                string answer = Console.ReadLine().ToLower();
-                if (answer != "ya")
+                if (skipToGame)
                 {
-                    continuePlaying = false;
+                    DisplayWelcomeMessage(ref skipToGame);
                 }
+                Console.Clear(); // Membersihkan konsol sebelum memulai permainan baru
+                string input = MainMenu.DisplayMainMenu();
+                Console.WriteLine(input);
+                
+                Console.Clear();
+
+                if (input == "1")
+                {
+                    DisplayWelcomeMessage(ref skipToGame);
+                } else if (input == "2")
+                {
+
+                    HowToPlayPage.DisplayHowToPlay();
+                } else if (input == "3")
+                {
+                    AboutPage.DisplayAbout();
+                } else if (input == "4")
+                {
+                    return;
+                }        
             }
         }
 
-        static void DisplayWelcomeMessage()
+        static void DisplayWelcomeMessage(ref bool skipToGame)
         {
+            Console.Clear();
             string title = "Selamat Datang di Game Tebak Kata!";
             string line = new string('=', title.Length + 8);
 
             Console.WriteLine(line);
             Console.WriteLine("".PadLeft((line.Length - title.Length) / 2) + title);
             Console.WriteLine(line);
+
+
+            PlayGame();
+
+            // Menanyakan apakah pemain ingin melanjutkan bermain
+            Console.Write("\nApakah Anda ingin bermain lagi? (ya/tidak): ");
+            string answer = Console.ReadLine().ToLower();
+           
+            skipToGame = answer == "ya";
         }
 
         static void PlayGame()
@@ -71,10 +92,14 @@ namespace TebakKata_Tes
             if (wrongGuessCount < 3)
             {
                 Console.WriteLine("\nSelamat! Anda berhasil menebak kata: " + game.GetSecretWord());
+                skor++;
+                Console.WriteLine($"Skor : {skor}");
             }
             else
             {
                 Console.WriteLine("\nAnda sudah salah menebak sebanyak 3 kali. Game berakhir.");
+                Console.WriteLine($"Skor : {skor}");
+                skor = 0;
             }
             Console.WriteLine("==========================================");
         }
