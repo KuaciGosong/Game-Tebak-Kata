@@ -8,13 +8,36 @@ namespace TebakKata_Tes
         {
             Console.SetWindowSize(100, 30); // Set ukuran jendela konsol agar cukup besar
 
-            Console.WriteLine("".PadLeft(45)); // Menambah spasi untuk menjaga judul berada di tengah
-            Console.WriteLine("==========================================");
-            Console.WriteLine("".PadLeft(45));
-            Console.WriteLine("          Selamat Datang di Game Tebak Kata!");
-            Console.WriteLine("".PadLeft(45));
-            Console.WriteLine("==========================================\n");
+            bool continuePlaying = true;
+            while (continuePlaying)
+            {
+                Console.Clear(); // Membersihkan konsol sebelum memulai permainan baru
+                DisplayWelcomeMessage();
 
+                PlayGame();
+
+                // Menanyakan apakah pemain ingin melanjutkan bermain
+                Console.Write("\nApakah Anda ingin bermain lagi? (ya/tidak): ");
+                string answer = Console.ReadLine().ToLower();
+                if (answer != "ya")
+                {
+                    continuePlaying = false;
+                }
+            }
+        }
+
+        static void DisplayWelcomeMessage()
+        {
+            string title = "Selamat Datang di Game Tebak Kata!";
+            string line = new string('=', title.Length + 8);
+
+            Console.WriteLine(line);
+            Console.WriteLine("".PadLeft((line.Length - title.Length) / 2) + title);
+            Console.WriteLine(line);
+        }
+
+        static void PlayGame()
+        {
             TebakKata game = new TebakKata();
 
             // Meminta pengguna untuk memasukkan kata kunci
